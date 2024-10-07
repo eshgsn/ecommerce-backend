@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const jwtSecret = 'jwt_secret_key';
 
-const verifytoken = (req, res, next) => {
+exports.verifytoken = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
@@ -14,6 +14,8 @@ const verifytoken = (req, res, next) => {
         const check = jwt.verify(token, jwtSecret);
 
         req.user = check;
+        req.role = check.role;
+        req.user.id = check.userId;
 
         next();
     } catch (error) {
@@ -21,4 +23,4 @@ const verifytoken = (req, res, next) => {
     }
 };
 
-module.exports = verifytoken;
+
